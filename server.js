@@ -43,6 +43,7 @@ function getJSONObjectForMovieRequirement(req) {
 }
 
 router.post('/signup', function(req, res) {
+
     if (!req.body.username || !req.body.password) {
         res.json({success: false, msg: 'Please include both username and password to signup.'})
     } else {
@@ -53,6 +54,8 @@ router.post('/signup', function(req, res) {
 
         db.save(newUser); //no duplicate checking
         res.json({success: true, msg: 'Successfully created new user.'})
+        
+
     }
 });
 
@@ -72,6 +75,31 @@ router.post('/signin', function (req, res) {
         }
     }
 });
+
+router.route('/movies')
+    .get(function(req, res) {
+
+        var o = getJSONObjectForMovieRequirement(req);
+        res.status(200).send({status: 200, msg: 'GET movies', headers: o.headers, query: o.body, env: o.key})
+
+    })
+
+    .post(function(req, res) {
+
+        var o = getJSONObjectForMovieRequirement(req);
+        res.status(200).send({status: 200, msg: 'movie saved', headers: o.headers, query: o.body, env: o.key})
+    })
+
+
+    .put(authJwtController.isAuthenticated, function(req, res){
+        var o = getJSONObjectForMovieRequirement(req);
+        res.status(200).send({status: 200, msg: 'movie updated', headers: o.headers, query: o.body, env: o.key})
+    })
+
+    .delete(authController.isAuthenticated, function(req, res){
+        var o = getJSONObjectForMovieRequirement(req);
+        res.status(200).send({status: 200, msg: 'movie deleted', headers: o.headers, query: o.body, env: o.key})
+    });
 
 router.route('/testcollection')
     .delete(authController.isAuthenticated, function(req, res) {
@@ -95,10 +123,10 @@ router.route('/testcollection')
     }
     );
 
-// app.get('/', function (req, res) {
-//     res.send('root');
-// })
 
+router.route('/', function(req, res){
+    res.send("Error: no URN specified");
+});
 app.use('/', router);
 app.listen(8080, () => {
     console.log(`Server listening at http://localhost:8080`);
