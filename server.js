@@ -95,7 +95,10 @@ router.route('/testcollection')
     }
     );
 
-app.use('/', router);
+app.get('/', function (req, res) {
+    res.send("hello world!");
+    });
+//app.use('/', router);
 app.listen(8080, () => {
     console.log(`Server listening at http://localhost:8080`);
 })
