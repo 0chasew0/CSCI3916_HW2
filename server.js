@@ -3,7 +3,7 @@ CSC3916 HW2
 File: Server.js
 Description: Web API scaffolding for Movie API
  */
-
+require('dotenv').config();
 var express = require('express');
 var http = require('http');
 var bodyParser = require('body-parser');
@@ -13,6 +13,7 @@ var authJwtController = require('./auth_jwt');
 db = require('./db')(); //hack
 var jwt = require('jsonwebtoken');
 var cors = require('cors');
+
 
 var app = express();
 app.use(cors());
@@ -95,7 +96,9 @@ router.route('/testcollection')
     );
 
 app.use('/', router);
-app.listen(process.env.PORT || 8080);
+app.listen(8080, () => {
+    console.log(`Server listening at http://localhost:8080`);
+})
 module.exports = app; // for testing only
 
 
