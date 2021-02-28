@@ -128,9 +128,7 @@ router.route('/', function(req, res){
     res.send("Error: no URN specified");
 });
 app.use('/', router);
-app.listen(8080, () => {
-    console.log(`Server listening at http://localhost:8080`);
-})
+app.listen(process.env.PORT || 8080);
 module.exports = app; // for testing only
 
 
